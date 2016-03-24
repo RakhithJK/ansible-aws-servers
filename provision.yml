@@ -8,7 +8,7 @@
 
   - name: create ec2 keys
     ec2_key: name=mykey region="{{ region }}"
-    register: keypairx
+    register: keypair
 
   - name: create a directory for the private key
     shell: "[ -d files ] || mkdir files"
