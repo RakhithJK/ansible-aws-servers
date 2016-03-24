@@ -47,12 +47,15 @@
           cidr_ip: 0.0.0.0/0
 
   - name: get the latest Ubuntu trusty image (AMI)
-    ec2_ami_find: distro=ubuntu release=trusty region="{{ region }}"
-    register: ubuntu_image
+    ec2_ami_find:
+      name: "ubuntu/images/ebs/ubuntu-trusty-14.04-amd64-server-*"
+      architecture: x86_64
+      region: "{{ region }}"
+    register: ami_find
 
   - name: start the Ubuntu instance
     ec2:
-      image: "{{ ubuntu_image.ami }}"
+      image: "{{ ami_find.results[0].ami_id }}"
       region: "{{ region }}"
       instance_type: t1.micro
       key_name: mykey
