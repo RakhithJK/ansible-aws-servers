@@ -1,0 +1,19 @@
+# Re-create access keys AWS console: <My Name> => Security Credentials => Access Keys. These
+# are the keys used to access AWS REST API; i.e. used by Ansible modules to
+# communicate with AWS.
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+
+# Delete key pairs in AWS console: Services => EC2 => Key Pairs. These are SSH
+# keys used to access the host (instance). Will be created by ec2_key Ansible
+# module.
+
+# Run the playbooks
+ansible-playbook provision.yml
+ansible-playbook configure.yml
+ansible-playbook deprovision.yml
+
+# Get the dynamic invetory script for EC2
+cd inventory
+wget https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/ec2.py
+wget https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/ec2.ini

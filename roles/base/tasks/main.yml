@@ -1,0 +1,6 @@
+---
+- name: install ntp
+  apt: pkg=ntp update_cache=yes cache_valid_time=86400
+
+- name: install fail2ban
+  apt: pkg=fail2ban update_cache=yes cache_valid_time=86400

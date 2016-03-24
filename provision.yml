@@ -1,0 +1,79 @@
+- name: create an ubuntu instance on Amazon EC2
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+    region: eu-west-1
+  tasks:
+
+  - name: create ec2 keys
+    ec2_key: name=mykey region="{{ region }}"
+    register: keypairx
+
+  - name: create a directory for the private key
+    shell: "[ -d files ] || mkdir files"
+
+  - name: write the private key to a file
+    copy:
+      dest: files/mykey.pem
+      content: "{{ keypair.key.private_key }}"
+      mode: 0600
+    when: keypair.changed
+
+  - name: create ssh security group
+    ec2_group:
+      name: ssh
+      description: allow ssh access
+      region: "{{ region }}"
+      rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+
+  - name: web security group
+    ec2_group:
+      name: web
+      description: allow http and https access
+      region: "{{ region }}"
+      rules:
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip: 0.0.0.0/0
+
+  - name: get the latest Ubuntu trusty image (AMI)
+    ec2_ami_search: distro=ubuntu release=trusty region="{{ region }}"
+    register: ubuntu_image
+
+  - name: start the Ubuntu instance
+    ec2:
+      image: "{{ ubuntu_image.ami }}"
+      region: "{{ region }}"
+      instance_type: t1.micro
+      key_name: mykey
+      group: [ ssh, web ]
+      instance_tags: { Name: ansible-demo, type: web, env: test }
+      exact_count: 1
+      count_tag: { Name: ansible-demo }
+      wait: yes
+    register: ec2
+
+  - name: wait for ssh server to be running
+    wait_for: host={{ item.public_dns_name }} port=22 search_regex=OpenSSH
+    with_items: ec2.instances
+
+  - name: add newly created host to ansible-playbook in-memory inventory
+    add_host: name={{ item.public_dns_name }} groups=web,test
+    with_items: ec2.instances
+
+- name: configure provisioned hosts
+  hosts: web:&test
+  sudo: True
+  roles:
+    - base
+    - web
