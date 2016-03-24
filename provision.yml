@@ -47,7 +47,7 @@
           cidr_ip: 0.0.0.0/0
 
   - name: get the latest Ubuntu trusty image (AMI)
-    ec2_ami_search: distro=ubuntu release=trusty region="{{ region }}"
+    ec2_ami_find: distro=ubuntu release=trusty region="{{ region }}"
     register: ubuntu_image
 
   - name: start the Ubuntu instance
@@ -73,7 +73,7 @@
 
 - name: configure provisioned hosts
   hosts: web:&test
-  sudo: True
+  become: True
   roles:
     - base
     - web
