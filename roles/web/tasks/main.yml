@@ -1,5 +1,9 @@
 ---
 # tasks file for web
+
+- name: change IP address in duckdns.org
+  get_url: url=https://www.duckdns.org/update?domains=reisinger&token="{{ duckdns_token }}"&ip="{{ public_ip }}" dest=/tmp
+
 - name: install nginx
   apt: pkg=nginx update_cache=yes cache_valid_time=86400
 
