@@ -4,16 +4,6 @@
 #- name: change IP address in duckdns.org
 #  get_url: url=https://www.duckdns.org/update?domains=reisinger&token="{{ duckdns_token }}"&ip="{{ public_ip }}" dest=/tmp
 
-# Add new.foo.com as an A record with 3 IPs and wait until the changes have been replicated
-- route53:
-    command: create
-    zone: reisingers.org
-    record: srv01.reisingers.org
-    type: A
-    ttl: 300
-    value: "{{ public_ip }}"
-    #wait: yes
-
 - name: install nginx
   apt: pkg=nginx update_cache=yes cache_valid_time=86400
 
