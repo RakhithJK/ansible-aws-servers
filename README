@@ -1,3 +1,6 @@
+# Install
+boto (python-boto)
+
 # Re-create access keys: <My Name> => Security Credentials => Access Keys.
 # These are the keys used to access AWS REST API; i.e. used by Ansible modules
 # to communicate with AWS.

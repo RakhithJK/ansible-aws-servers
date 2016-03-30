@@ -57,7 +57,7 @@
     ec2:
       image: "{{ ami_find.results[0].ami_id }}"
       region: "{{ region }}"
-      instance_type: t1.micro
+      instance_type: t1.nano
       key_name: mykey
       group: [ ssh, web ]
       instance_tags: { Name: ansible-demo, type: web, env: test }
