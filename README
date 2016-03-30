@@ -7,7 +7,7 @@ export AWS_SECRET_ACCESS_KEY=
 # Delete key pairs: Services => EC2 => Key Pairs. These are SSH keys used to
 # access the host (instance). Will be created by ec2_key Ansible module.
 
-DUCKDNS_TOKEN=
+export DUCKDNS_TOKEN=
 
 # Run the playbooks
 ansible-playbook provision.yml
