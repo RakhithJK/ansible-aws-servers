@@ -79,6 +79,7 @@
       ttl: 300
       value: "{{ item.public_ip }}"
       #wait: yes
+      overwrite: yes
     with_items: "{{ ec2.instances }}"
 
   - name: add newly created host to ansible-playbook in-memory inventory
