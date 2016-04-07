@@ -22,3 +22,7 @@
 
 - name: restart nginx
   service: name=nginx state=restarted
+
+- include: myquote.yml
+  tags:
+    - myquote
