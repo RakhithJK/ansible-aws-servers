@@ -14,8 +14,16 @@
     - gcc
     - make
     - git
+    - liblwp-protocol-https-perl
+    - cpanminus
 
-- name: setup env. variable for cron job
+- name: install CPAN modules
+  cpanm: name={{ item }}
+  with_items:
+    - LWP::Simple
+    - CGI
+
+- name: setup environmnet variable for cron job
   cron: user=ubuntu name=PERL5LIB env=yes value=/home/jreisinger/perl5/MyUtils/lib:/home/jreisinger/perl5/lib/perl5
 
 - name: setup cron job
