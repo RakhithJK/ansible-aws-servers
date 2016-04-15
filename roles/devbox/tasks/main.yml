@@ -17,3 +17,11 @@
 
 - name: Symlink ... to bin
   file: src=/home/ubuntu/.../bin/... dest=/home/ubuntu/bin/... state=link
+
+- name: Install CPAN modules for managing GitHub (keys)
+  cpanm: name={{ item }}
+  with_items:
+    - Pithub::Users::Keys
+
+#- name: Clone my GitHub repos
+#  git:
