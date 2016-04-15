@@ -1,0 +1,19 @@
+- name: Install packages
+  apt: name={{ item }} update_cache=yes cache_valid_time=7200
+  with_items:
+    - git
+    - vim
+    - perltidy
+    - screen
+    - wget
+    - cpio
+
+- name: Install ... dot files manager
+  git: repo=git://github.com/ingydotnet/....git dest=/home/ubuntu/...
+  become_user: ubuntu
+
+- name: Configure ...
+  template: src=conf.j2 dest=/home/ubuntu/.../conf
+
+- name: Symlink ... to bin
+  file: src=/home/ubuntu/.../bin/... dest=/home/ubuntu/bin/... state=link

@@ -90,5 +90,6 @@
   hosts: web:&test
   become: True
   roles:
-    - base
-    - web
+    - { role: base, tags: ['base'] }
+    - { role: web, tags: ['web'] }
+    - { role: devbox, tags: ['devbox'] }
