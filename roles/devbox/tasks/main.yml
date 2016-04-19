@@ -1,4 +1,4 @@
-- name: Install packages
+- name: install deb packages
   apt: name={{ item }} update_cache=yes cache_valid_time=7200
   with_items:
     - git
@@ -8,20 +8,31 @@
     - wget
     - cpio
 
-- name: Install ... dot files manager
-  git: repo=git://github.com/ingydotnet/....git dest=/home/ubuntu/...
-  become_user: ubuntu
+- name: install ... dot files manager
+  git: repo=git://github.com/ingydotnet/....git dest=/home/{{ os_user }}/...
 
-- name: Configure ...
-  template: src=conf.j2 dest=/home/ubuntu/.../conf
+- name: configure ...
+  template: src=conf.j2 dest=/home/{{ os_user }}/.../conf
 
-- name: Symlink ... to bin
-  file: src=/home/ubuntu/.../bin/... dest=/home/ubuntu/bin/... state=link
+- name: symlink ... to bin
+  file: src=/home/{{ os_user }}/.../bin/... dest=/home/{{ os_user }}/bin/... state=link
 
-- name: Install CPAN modules for managing GitHub (keys)
+- name: install CPAN modules for managing GitHub keys
   cpanm: name={{ item }}
   with_items:
     - Pithub::Users::Keys
 
+- name: create SSH keys in ~/.ssh
+  command: ssh-keygen -t rsa -N "" -f /home/{{ os_user }}/.ssh/id_rsa creates=/home/{{ os_user }}/.ssh/id_rsa
+
+- name: set onwership and mode for ~/.ssh
+  file: path=/home/{{ os_user }}/.ssh owner={{ os_user }} group={{ os_user }} mode=0700
+
+- name: copy script for adding SSH key to GitHub
+  template: src=github_add_key.j2 dest=/home/{{ os_user }}/bin/github_add_key mode=0700
+
 #- name: Clone my GitHub repos
 #  git:
+
+- name: set onwership for ~ recursively
+  file: path=/home/{{ os_user }} owner={{ os_user }} group={{ os_user }} recurse=yes

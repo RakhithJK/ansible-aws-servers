@@ -89,6 +89,12 @@
 - name: configure provisioned hosts
   hosts: web:&test
   become: True
+  vars:
+    os_user: ubuntu
+  vars_prompt:
+    - name: "github_token"
+      prompt: "GitHub token"
+      private: yes
   roles:
     - { role: base, tags: ['base'] }
     - { role: web, tags: ['web'] }

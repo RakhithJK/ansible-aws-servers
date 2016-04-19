@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Pithub::Users::Keys;
+
+my $key;
+open(my $fh, '<', "$ENV{HOME}/.ssh/id_rsa.pub") or die "can't read SSH key: $!";
+{
+        local $/;
+        $key = <$fh>;
+}
+close($fh);
+
+my $k = Pithub::Users::Keys->new( token => '{{ github_token }}' );
+my $result = $k->create(
+        data => {
+                title => 'ubuntu@reisingers.org',
+                key   => $key,
+        }
+);

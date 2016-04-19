@@ -7,7 +7,7 @@
 - name: download myquote script
   get_url: url=https://raw.githubusercontent.com/jreisinger/dotfiles/master/bin/myquote dest=/home/ubuntu/bin/ mode=0740 owner=ubuntu group=ubuntu
 
-- name: install necessary packages
+- name: install deb packages
   apt: name={{ item }} update_cache=yes cache_valid_time=7200
   with_items:
     - libssl-dev
