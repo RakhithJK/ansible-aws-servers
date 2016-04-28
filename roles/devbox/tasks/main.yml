@@ -7,6 +7,10 @@
     - screen
     - wget
     - cpio
+    - cpanminus
+    - make
+    - gcc
+    - libpithub-perl
 
 - name: install ... dot files manager
   git: repo=git://github.com/ingydotnet/....git dest=/home/{{ os_user }}/...
@@ -14,13 +18,11 @@
 - name: configure ...
   template: src=conf.j2 dest=/home/{{ os_user }}/.../conf
 
+- name: create ~bin directory
+  file: path=/home/{{ os_user }}/bin state=directory
+
 - name: symlink ... to bin
   file: src=/home/{{ os_user }}/.../bin/... dest=/home/{{ os_user }}/bin/... state=link
-
-- name: install CPAN modules for managing GitHub keys
-  cpanm: name={{ item }}
-  with_items:
-    - Pithub::Users::Keys
 
 - name: create SSH keys in ~/.ssh
   command: ssh-keygen -t rsa -N "" -f /home/{{ os_user }}/.ssh/id_rsa creates=/home/{{ os_user }}/.ssh/id_rsa
