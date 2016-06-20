@@ -1,3 +1,5 @@
+NOTE: This repo was (probably) superseded by https://github.com/jreisinger/ansible-aws-server.
+
 # Install
 boto (python-boto)
 
